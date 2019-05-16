@@ -23,11 +23,33 @@ def getInfo(url):
 	locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
 	
 	#grab values from the html
-	itemdata['itemid'] = int(item.find(id='exchange-itemid').text)
-	itemdata['itemname'] = item.find(class_='gemw-name').text
-	itemdata['highalch'] = int(locale.atoi(item.find(id='exchange-highalch').text))
-	itemdata['lowalch'] = int(locale.atoi(item.find(id='exchange-lowalch').text))
-	itemdata['price'] = int(locale.atoi(item.find(class_='gemw-price').text))
+	values = [item.find(id='exchange-itemid').text, 
+						item.find(class_='gemw-name').text,
+						item.find(id='exchange-highalch').text, 
+						item.find(id='exchange-lowalch').text,
+						item.find(class_='gemw-price').text,
+						item.find(id='exchange-limit').text]
+	
+	try:
+		itemdata['itemid'] = int(values[0])
+	except (TypeError, ValueError):
+		pass
+	
+	if values[1]:
+		itemdata['itemname'] = values[1]
+	
+	try:
+		itemdata['highalch'] = int(locale.atoi(values[2]))
+	except (TypeError, ValueError):
+		pass
+	
+	try:
+		itemdata['lowalch'] = int(locale.atoi(values[3]))
+	except (TypeError, ValueError):
+		pass
+	
+	
+	itemdata['price'] = int(locale.atoi(values[4]))
 	
 	date = item.find(class_='gemw-updated')['data-date']
 	
@@ -39,10 +61,25 @@ def getInfo(url):
 		
 	
 	itemdata['updated'] = dt
-	itemdata['buylimit'] = int(locale.atoi(item.find(id='exchange-limit').text))
 	
+	try:
+		itemdata['buylimit'] = int(locale.atoi(values[5]))
+	except (TypeError, ValueError):
+		pass
 	
 	
 	return itemdata
 	
 
+def getLinks(url, prefix, pattern):
+	
+	page = requests.get(url)
+	regex = re.compile(pattern)
+	pagesoup = BeautifulSoup(page.text, features='lxml')
+	links = []
+	for link in pagesoup.find_all('a', attrs={'href': regex}):
+		links.append(prefix + link.get('href'))
+	return links
+	
+	
+	
