@@ -4,12 +4,15 @@
 ##	Scrape RS wiki for grand exchange prices  
 * Ideally hourly resolution  
 * Need way to detect new items  
+* Pull info from page given url
+* Pull item names from list of item names
 
 
 ##	Compile data into some kind of database  
 * ~38,000 items  
 * Title | Price t1 | Price t2 | Price t3 | ... | Price tN |  
 * MongoDB  
+* 2 Databases, 1 for time series data, other for front-end info
 
 
 ##	Perform analytics on data  
