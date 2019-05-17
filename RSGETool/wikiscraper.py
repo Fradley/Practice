@@ -30,6 +30,7 @@ def getInfo(url):
 						item.find(class_='gemw-price').text,
 						item.find(id='exchange-limit').text]
 	
+	#try-except blocks to allow default values to override if non-int is passed
 	try:
 		itemdata['itemid'] = int(values[0])
 	except (TypeError, ValueError):
