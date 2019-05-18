@@ -13,11 +13,13 @@ def getInfo(url):
 	
 	itemdata = {'itemid'	: NaN,
 							'itemname': '',
+							'url'			: url,
 							'buylimit': NaN,
 							'highalch': NaN,
 							'lowalch'	: NaN,
 							'price'		: NaN,
-							'updated'	: datetime.datetime.now
+							'updated'	: datetime.datetime.now,
+							'series'	: []
 							}
 	
 	locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' ) 
@@ -28,7 +30,8 @@ def getInfo(url):
 						item.find(id='exchange-highalch').text, 
 						item.find(id='exchange-lowalch').text,
 						item.find(class_='gemw-price').text,
-						item.find(id='exchange-limit').text]
+						item.find(id='exchange-limit').text
+						]
 	
 	#try-except blocks to allow default values to override if non-int is passed
 	try:
@@ -81,6 +84,14 @@ def getLinks(url, prefix, pattern):
 	for link in pagesoup.find_all('a', attrs={'href': regex}):
 		links.append(prefix + link.get('href'))
 	return links
+	
+	
+def getItemPrice(url):
+	
+	item = requests.get(url)
+	item = BeautifulSoup(item.text, 'html.parser')
+	
+	price = item.find(class_='gemw-price').text
 	
 	
 	

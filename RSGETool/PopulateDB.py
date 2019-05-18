@@ -3,6 +3,7 @@ import wikiscraper
 import time
 import requests
 from pymongo import MongoClient
+import datetime
 
 
 client = MongoClient('localhost', 27017)
@@ -23,13 +24,15 @@ for item in items:
 
 	try:
 		post = wikiscraper.getInfo(item)
+		db['items'].insert_one(post)
 	except requests.exceptions.ConnectionError:
 		print('bad link ' + link)
 		
-	db.posts.insert_one(post)
 	
 	pcnt = int((ticker / count) * 100.0)
 	tn = time.time() - ts
 	if ticker % 10 == 0:
-		s = str(pcnt) + " % complete. ETA: " + str(int(tn / (ticker / count)))
+		elapsed = int(tn)
+		estlen = int((count / ticker) * tn)
+		s = str(pcnt) + " % complete.\tElapsed: " + str(elapsed) + "\tETA: " + str(datetime.timedelta(seconds=(estlen - elapsed)))
 		print(s)
