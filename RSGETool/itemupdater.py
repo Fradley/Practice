@@ -21,7 +21,7 @@ for doc in cursor:
 	date = datetime.datetime.now
 	
 	if price:
-		coll.update_one({'_id', oid}, {'$push': {'series': (date, price)}})
+		coll.update({'_id', oid}, {'$push': {'series': (date, price)}})
 		
 	if ticker % 10 == 0:
 		elapsed = int(tn)
