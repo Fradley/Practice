@@ -7,7 +7,7 @@ db = client['itemdb']
 coll = db.items
 cursor = coll.find({})
 
-count = coll.count_documents()
+count = coll.count_documents({})
 
 ticker = 0.0
 
