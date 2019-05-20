@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import wikiscraper
 import datetime
+import time
 
 client = MongoClient('localhost', 27017)
 db = client['itemdb']
@@ -11,6 +12,7 @@ count = coll.count_documents({})
 
 ticker = 0.0
 
+ts = time.time()
 
 for doc in cursor:
 	ticker += 1
@@ -19,7 +21,7 @@ for doc in cursor:
 	oid = doc['_id']
 	price = wikiscraper.getItemPrice(url)
 	date = datetime.datetime.now
-	
+	tn = time.time() - ts
 	if price:
 		coll.update({'_id', oid}, {'$push': {'series': (date, price)}})
 		
