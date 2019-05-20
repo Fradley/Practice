@@ -26,6 +26,7 @@ for doc in cursor:
 		coll.update({'_id', oid}, {'$push': {'series': (date, price)}})
 		
 	if ticker % 10 == 0:
+		pcnt = int((ticker / count) * 100)
 		elapsed = int(tn)
 		estlen = int((count / ticker) * tn)
 		s = str(pcnt) + " % complete.\tElapsed: " + str(elapsed) + "\tETA: " + str(datetime.timedelta(seconds=(estlen - elapsed)))
