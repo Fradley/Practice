@@ -20,11 +20,12 @@ for doc in cursor:
 	url = doc['url']
 	oid = doc['_id']
 	price = wikiscraper.getItemPrice(url)
-	date = datetime.datetime.now
+	date = datetime.datetime.now()
+	datestr = date.strftime("%Y %m %d %H")
 	tn = time.time() - ts
 	print(price)
 	if price:
-		coll.update_one({'_id': oid}, {'$push': {'series': [date, price]}})
+		coll.update_one({'_id': oid}, {'$push': {'series': {datestr: price}}})
 		
 	if ticker % 10 == 0:
 		pcnt = int((ticker / count) * 100)
