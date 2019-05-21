@@ -22,6 +22,7 @@ for doc in cursor:
 	price = wikiscraper.getItemPrice(url)
 	date = datetime.datetime.now
 	tn = time.time() - ts
+	print(price)
 	if price:
 		coll.update({'_id', oid}, {'$push': {'series': (date, price)}})
 		
