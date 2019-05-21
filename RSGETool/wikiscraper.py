@@ -90,8 +90,12 @@ def getItemPrice(url):
 	
 	item = requests.get(url)
 	item = BeautifulSoup(item.text, 'html.parser')
+	locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 	
-	price = item.find(class_='gemw-price').text
-	
+	try:
+		price = int(locale.atoi(item.find(class_='gemw-price').text))
+	except (TypeError, ValueError):
+		price = NaN
+	return price
 	
 	
