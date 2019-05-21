@@ -24,7 +24,7 @@ for doc in cursor:
 	tn = time.time() - ts
 	print(price)
 	if price:
-		coll.update_one({'_id': oid}, {'$push': {'series': (date, price)}})
+		coll.update_one({'_id': oid}, {'$push': {'series': [date, price]}})
 		
 	if ticker % 10 == 0:
 		pcnt = int((ticker / count) * 100)
